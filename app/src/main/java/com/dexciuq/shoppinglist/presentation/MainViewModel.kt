@@ -1,9 +1,7 @@
 package com.dexciuq.shoppinglist.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dexciuq.shoppinglist.data.ProductRepositoryImpl
-import com.dexciuq.shoppinglist.domain.AddProductUseCase
 import com.dexciuq.shoppinglist.domain.DeleteProductUseCase
 import com.dexciuq.shoppinglist.domain.GetProductListUseCase
 import com.dexciuq.shoppinglist.domain.Product
