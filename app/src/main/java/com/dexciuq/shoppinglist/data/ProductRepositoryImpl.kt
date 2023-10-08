@@ -1,13 +1,20 @@
 package com.dexciuq.shoppinglist.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.dexciuq.shoppinglist.domain.Product
 import com.dexciuq.shoppinglist.domain.ProductRepository
 
 object ProductRepositoryImpl : ProductRepository {
 
+    private val productListLiveData = MutableLiveData<List<Product>>()
     private val productList = mutableListOf<Product>()
     private var autoIncrement = 0
-    override fun getProductList(): List<Product> = productList.toList()
+
+    private fun updateList() {
+        productListLiveData.value = productList.toList()
+    }
+    override fun getProductList(): LiveData<List<Product>> = productListLiveData
 
     override fun getProduct(id: Int): Product =
         productList.find {
@@ -19,6 +26,7 @@ object ProductRepositoryImpl : ProductRepository {
             product.id = autoIncrement++
         }
         productList.add(product)
+        updateList()
     }
 
     override fun updateProduct(product: Product) {
@@ -32,5 +40,6 @@ object ProductRepositoryImpl : ProductRepository {
             it.id == id
         }
         if (!isRemoved) error("Product with id: $id not found")
+        updateList()
     }
 }
