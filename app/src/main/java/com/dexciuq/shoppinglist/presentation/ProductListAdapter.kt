@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dexciuq.shoppinglist.R
@@ -13,8 +14,10 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHo
 
     var productList = listOf<Product>()
         set(value) {
+            val diffCallback = ProductListDiffCallback(productList, value)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            diffResult.dispatchUpdatesTo(this@ProductListAdapter)
             field = value
-            notifyDataSetChanged()
         }
 
     var onProductLongClickListener: (Product) -> Unit = {}

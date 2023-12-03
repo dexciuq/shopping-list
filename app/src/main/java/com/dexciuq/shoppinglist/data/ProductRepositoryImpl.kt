@@ -10,10 +10,10 @@ object ProductRepositoryImpl : ProductRepository {
 
     private val productListLiveData = MutableLiveData<List<Product>>()
     private val productList = mutableListOf<Product>()
-    private var autoIncrement = 100
+    private var autoIncrement = 0
 
     init {
-        repeat(autoIncrement) {
+        repeat(100) {
             val item = Product(name = "Name $it", quantity = it.toDouble(), active = Random.nextBoolean())
             addProduct(item)
         }
