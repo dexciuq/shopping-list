@@ -17,6 +17,9 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHo
             notifyDataSetChanged()
         }
 
+    var onProductLongClickListener: (Product) -> Unit = {}
+    var onProductClickListener: (Product) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layout = when (viewType) {
             PRODUCT_ACTIVE_VIEW_TYPE -> R.layout.item_product_active
@@ -33,7 +36,11 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHo
         holder.name.text = product.name
         holder.quantity.text = product.quantity.toString()
         holder.itemView.setOnLongClickListener {
+            onProductLongClickListener(product)
             true
+        }
+        holder.itemView.setOnClickListener {
+            onProductClickListener(product)
         }
     }
 

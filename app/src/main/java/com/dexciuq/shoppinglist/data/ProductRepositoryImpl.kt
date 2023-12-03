@@ -10,18 +10,19 @@ object ProductRepositoryImpl : ProductRepository {
 
     private val productListLiveData = MutableLiveData<List<Product>>()
     private val productList = mutableListOf<Product>()
-    private var autoIncrement = 1000
+    private var autoIncrement = 100
 
     init {
-        repeat(1000) {
+        repeat(autoIncrement) {
             val item = Product(name = "Name $it", quantity = it.toDouble(), active = Random.nextBoolean())
             addProduct(item)
         }
     }
 
     private fun updateList() {
-        productListLiveData.value = productList.toList()
+        productListLiveData.value = productList.sortedBy { it.id }.toList()
     }
+
     override fun getProductList(): LiveData<List<Product>> = productListLiveData
 
     override fun getProduct(id: Int): Product =
