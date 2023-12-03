@@ -1,24 +1,12 @@
 package com.dexciuq.shoppinglist.presentation
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.ListAdapter
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.domain.Product
 
-class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
-
-    var productList = listOf<Product>()
-        set(value) {
-            val diffCallback = ProductListDiffCallback(productList, value)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            diffResult.dispatchUpdatesTo(this@ProductListAdapter)
-            field = value
-        }
+class ProductListAdapter : ListAdapter<Product, ProductViewHolder>(ProductDiffCallback()) {
 
     var onProductLongClickListener: (Product) -> Unit = {}
     var onProductClickListener: (Product) -> Unit = {}
@@ -35,9 +23,11 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHo
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = productList[position]
+        val product = getItem(position)
+
         holder.name.text = product.name
         holder.quantity.text = product.quantity.toString()
+
         holder.itemView.setOnLongClickListener {
             onProductLongClickListener(product)
             true
@@ -47,21 +37,12 @@ class ProductListAdapter : RecyclerView.Adapter<ProductListAdapter.ProductViewHo
         }
     }
 
-    override fun getItemCount(): Int {
-        return productList.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        val product = productList[position]
+        val product = getItem(position)
         return when (product.active) {
             true -> PRODUCT_ACTIVE_VIEW_TYPE
             false -> PRODUCT_INACTIVE_VIEW_TYPE
         }
-    }
-
-    class ProductViewHolder(view: View) : ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.product_name)
-        val quantity: TextView = view.findViewById(R.id.product_quantity)
     }
 
     companion object {

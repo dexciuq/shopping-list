@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = adapter.productList[viewHolder.adapterPosition]
+                val item = adapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteProduct(item.id)
             }
         }
@@ -69,8 +69,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.productList.observe(this) {
-            adapter.productList = it
-        }
+        viewModel.productList.observe(this, adapter::submitList)
     }
 }
