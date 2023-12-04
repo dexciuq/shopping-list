@@ -69,9 +69,9 @@ class ProductViewModel : ViewModel() {
                     active = true
                 )
             )
-        }
 
-        finishWork()
+            finishWork()
+        }
     }
 
     private fun parseName(name: String?): String = name?.trim() ?: ""
@@ -84,17 +84,18 @@ class ProductViewModel : ViewModel() {
         }
 
     private fun validateInput(name: String, quantity: Double): Boolean {
+        var result = true
         if (name.isBlank()) {
             _nameInputError.value = true
-            return false
+            result = false
         }
 
         if (quantity <= 0) {
             _quantityInputError.value = true
-            return false
+            result = false
         }
 
-        return true
+        return result
     }
 
     private fun finishWork() {

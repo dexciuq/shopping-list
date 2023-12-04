@@ -1,7 +1,6 @@
 package com.dexciuq.shoppinglist.presentation
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -20,7 +19,15 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setContentView(binding.root)
         setProductsRecyclerView()
+        setupAddProduct()
         setObservers()
+    }
+
+    private fun setupAddProduct() {
+        binding.addProductBtn.setOnClickListener {
+            val intent = ProductActivity.newIntentAddMode(context = this)
+            startActivity(intent)
+        }
     }
 
     private fun setProductsRecyclerView() {
@@ -42,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         adapter = ProductListAdapter()
         adapter.onProductLongClickListener = viewModel::changeEnabledState
         adapter.onProductClickListener = {
-            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+            val intent = ProductActivity.newIntentEditMode(context = this, id = it.id)
+            startActivity(intent)
         }
     }
 
