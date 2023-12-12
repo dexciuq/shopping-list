@@ -1,10 +1,13 @@
 package com.dexciuq.shoppinglist.presentation
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,10 +26,30 @@ class MainActivity : AppCompatActivity() {
         setObservers()
     }
 
+    private fun isOrientationLandscape(): Boolean {
+        return resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE
+    }
+
+    private fun setProductContainer(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.product_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupAddProduct() {
         binding.addProductBtn.setOnClickListener {
-            val intent = ProductActivity.newIntentAddMode(context = this)
-            startActivity(intent)
+            when (isOrientationLandscape()) {
+                true -> {
+                    setProductContainer(ProductFragment.newInstanceAddMode())
+                }
+
+                false -> {
+                    val intent = ProductActivity.newIntentAddMode(context = this)
+                    startActivity(intent)
+                }
+            }
         }
     }
 
@@ -49,8 +72,16 @@ class MainActivity : AppCompatActivity() {
         adapter = ProductListAdapter()
         adapter.onProductLongClickListener = viewModel::changeEnabledState
         adapter.onProductClickListener = {
-            val intent = ProductActivity.newIntentEditMode(context = this, id = it.id)
-            startActivity(intent)
+            when (isOrientationLandscape()) {
+                true -> {
+                    setProductContainer(ProductFragment.newInstanceEditMode(it.id))
+                }
+
+                false -> {
+                    val intent = ProductActivity.newIntentEditMode(context = this, id = it.id)
+                    startActivity(intent)
+                }
+            }
         }
     }
 

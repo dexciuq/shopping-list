@@ -18,7 +18,9 @@ class ProductActivity : AppCompatActivity() {
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
         parseIntent()
-        launchRightFragment()
+        if (savedInstanceState == null) {
+            launchRightFragment()
+        }
     }
 
     private fun parseIntent() {
@@ -47,7 +49,7 @@ class ProductActivity : AppCompatActivity() {
             else -> error("unknown mode")
         }
         supportFragmentManager.beginTransaction()
-            .add(R.id.product_container, fragment)
+            .replace(R.id.product_container, fragment)
             .commit()
     }
 
