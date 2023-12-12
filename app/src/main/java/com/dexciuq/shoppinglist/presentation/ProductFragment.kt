@@ -1,5 +1,6 @@
 package com.dexciuq.shoppinglist.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,20 @@ import com.dexciuq.shoppinglist.domain.Product
 class ProductFragment : Fragment() {
 
     private val binding by lazy { FragmentProductBinding.inflate(layoutInflater) }
+    private lateinit var onSaveListener: OnSaveListener
     private lateinit var viewModel: ProductViewModel
 
     private var mode: String = MODE_UNKNOWN
     private var id: Int = Product.UNDEFINED_ID
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnSaveListener) {
+            onSaveListener = context
+        } else {
+            error("Activity must implement OnEditingFinishedListener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +126,7 @@ class ProductFragment : Fragment() {
         }
 
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onSaveListener.onSaveClick()
         }
     }
 
@@ -153,5 +164,9 @@ class ProductFragment : Fragment() {
                 )
             }
         }
+    }
+
+    interface OnSaveListener {
+        fun onSaveClick()
     }
 }

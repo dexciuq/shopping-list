@@ -3,12 +3,13 @@ package com.dexciuq.shoppinglist.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityProductBinding
 import com.dexciuq.shoppinglist.domain.Product
 
-class ProductActivity : AppCompatActivity() {
+class ProductActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
     private lateinit var binding: ActivityProductBinding
     private var mode: String = MODE_UNKNOWN
@@ -21,6 +22,15 @@ class ProductActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             launchRightFragment()
         }
+    }
+
+    override fun onSaveClick() {
+        Toast.makeText(
+            this@ProductActivity,
+            "Success",
+            Toast.LENGTH_SHORT
+        ).show()
+        finish()
     }
 
     private fun parseIntent() {

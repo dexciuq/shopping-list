@@ -2,6 +2,7 @@ package com.dexciuq.shoppinglist.presentation
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -24,6 +25,15 @@ class MainActivity : AppCompatActivity() {
         setProductsRecyclerView()
         setupAddProduct()
         setObservers()
+    }
+
+    override fun onSaveClick() {
+        Toast.makeText(
+            this@MainActivity,
+            "Success",
+            Toast.LENGTH_SHORT
+        ).show()
+        supportFragmentManager.popBackStack()
     }
 
     private fun isOrientationLandscape(): Boolean {
