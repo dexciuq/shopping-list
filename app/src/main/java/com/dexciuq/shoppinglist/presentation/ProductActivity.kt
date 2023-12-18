@@ -11,12 +11,12 @@ import com.dexciuq.shoppinglist.domain.Product
 
 class ProductActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
-    private lateinit var binding: ActivityProductBinding
+    private val binding by lazy { ActivityProductBinding.inflate(layoutInflater) }
     private var mode: String = MODE_UNKNOWN
     private var id: Int = Product.UNDEFINED_ID
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
         parseIntent()
         if (savedInstanceState == null) {

@@ -1,4 +1,4 @@
-package com.dexciuq.shoppinglist.presentation
+package com.dexciuq.shoppinglist.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.dexciuq.shoppinglist.domain.Product

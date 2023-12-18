@@ -10,17 +10,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
+import com.dexciuq.shoppinglist.presentation.adapter.ProductListAdapter
 
 class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val viewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
     private lateinit var adapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setContentView(binding.root)
         setProductsRecyclerView()
         setupAddProduct()

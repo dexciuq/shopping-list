@@ -16,8 +16,9 @@ import com.dexciuq.shoppinglist.domain.Product
 class ProductFragment : Fragment() {
 
     private val binding by lazy { FragmentProductBinding.inflate(layoutInflater) }
+    private val viewModel by lazy { ViewModelProvider(this)[ProductViewModel::class.java] }
+
     private lateinit var onSaveListener: OnSaveListener
-    private lateinit var viewModel: ProductViewModel
 
     private var mode: String = MODE_UNKNOWN
     private var id: Int = Product.UNDEFINED_ID
@@ -46,7 +47,6 @@ class ProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ProductViewModel::class.java]
         setupScreenMode()
         setupTextWatchers()
         setupErrorObservers()
