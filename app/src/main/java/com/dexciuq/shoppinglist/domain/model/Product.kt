@@ -1,4 +1,4 @@
-package com.dexciuq.shoppinglist.domain
+package com.dexciuq.shoppinglist.domain.model
 
 data class Product(
     var id: Int = UNDEFINED_ID,
@@ -7,6 +7,6 @@ data class Product(
     val active: Boolean,
 ) {
     companion object {
-        const val UNDEFINED_ID = -1
+        const val UNDEFINED_ID = 0
     }
 }

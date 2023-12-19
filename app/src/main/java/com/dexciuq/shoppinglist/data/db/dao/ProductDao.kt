@@ -1,10 +1,11 @@
-package com.dexciuq.shoppinglist.data
+package com.dexciuq.shoppinglist.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.dexciuq.shoppinglist.data.model.ProductEntity
 
 @Dao
 interface ProductDao {
@@ -13,11 +14,11 @@ interface ProductDao {
     fun getProductList(): LiveData<List<ProductEntity>>
 
     @Query("SELECT * FROM products WHERE id = :id LIMIT 1")
-    fun getProduct(id: Int): ProductEntity?
+    suspend fun getProduct(id: Int): ProductEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addProduct(productEntity: ProductEntity)
+    suspend fun addProduct(productEntity: ProductEntity)
 
     @Query("DELETE FROM products WHERE id = :id")
-    fun deleteProduct(id: Int)
+    suspend fun deleteProduct(id: Int)
 }

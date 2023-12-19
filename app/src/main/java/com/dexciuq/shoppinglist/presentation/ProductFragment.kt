@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.FragmentProductBinding
-import com.dexciuq.shoppinglist.domain.Product
+import com.dexciuq.shoppinglist.domain.model.Product
 
 class ProductFragment : Fragment() {
 

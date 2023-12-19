@@ -1,15 +1,20 @@
 package com.dexciuq.shoppinglist.presentation
 
-import androidx.lifecycle.ViewModel
-import com.dexciuq.shoppinglist.data.ProductRepositoryImpl
-import com.dexciuq.shoppinglist.domain.DeleteProductUseCase
-import com.dexciuq.shoppinglist.domain.GetProductListUseCase
-import com.dexciuq.shoppinglist.domain.Product
-import com.dexciuq.shoppinglist.domain.UpdateProductUseCase
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.dexciuq.shoppinglist.data.repository.ProductRepositoryImpl
+import com.dexciuq.shoppinglist.domain.model.Product
+import com.dexciuq.shoppinglist.domain.use_case.DeleteProductUseCase
+import com.dexciuq.shoppinglist.domain.use_case.GetProductListUseCase
+import com.dexciuq.shoppinglist.domain.use_case.UpdateProductUseCase
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    application: Application
+) : AndroidViewModel(application) {
 
-    private val productRepository = ProductRepositoryImpl
+    private val productRepository = ProductRepositoryImpl(application)
 
     private val getProductListUseCase = GetProductListUseCase(productRepository)
     private val deleteProductUseCase = DeleteProductUseCase(productRepository)
@@ -17,13 +22,12 @@ class MainViewModel : ViewModel() {
 
     val productList = getProductListUseCase()
 
-    fun deleteProduct(id: Int) {
+    fun deleteProduct(id: Int) = viewModelScope.launch {
         deleteProductUseCase(id)
     }
 
-    fun changeEnabledState(product: Product) {
+    fun changeEnabledState(product: Product) = viewModelScope.launch {
         val newProduct = product.copy(active = !product.active)
         updateProductUseCase(newProduct)
     }
-
 }

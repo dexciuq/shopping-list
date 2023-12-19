@@ -1,9 +1,11 @@
-package com.dexciuq.shoppinglist.data
+package com.dexciuq.shoppinglist.data.db
 
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.dexciuq.shoppinglist.data.db.dao.ProductDao
+import com.dexciuq.shoppinglist.data.model.ProductEntity
 
 @Database(entities = [ProductEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
