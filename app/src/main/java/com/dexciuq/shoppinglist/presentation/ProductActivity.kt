@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityProductBinding
-import com.dexciuq.shoppinglist.domain.Product
+import com.dexciuq.shoppinglist.domain.model.Product
 
 class ProductActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 

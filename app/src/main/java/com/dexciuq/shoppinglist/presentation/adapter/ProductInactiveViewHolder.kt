@@ -2,7 +2,7 @@ package com.dexciuq.shoppinglist.presentation.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.databinding.ItemProductInactiveBinding
-import com.dexciuq.shoppinglist.domain.Product
+import com.dexciuq.shoppinglist.domain.model.Product
 
 class ProductInactiveViewHolder(
     private val binding: ItemProductInactiveBinding

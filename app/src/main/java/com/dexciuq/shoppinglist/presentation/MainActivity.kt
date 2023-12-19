@@ -79,7 +79,9 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
     private fun setupProductListAdapter() {
         adapter = ProductListAdapter()
-        adapter.onProductLongClickListener = viewModel::changeEnabledState
+        adapter.onProductLongClickListener = {
+            viewModel.changeEnabledState(it)
+        }
         adapter.onProductClickListener = {
             when (isOrientationLandscape()) {
                 true -> {

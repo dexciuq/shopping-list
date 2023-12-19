@@ -1,17 +1,22 @@
 package com.dexciuq.shoppinglist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.dexciuq.shoppinglist.data.ProductRepositoryImpl
-import com.dexciuq.shoppinglist.domain.AddProductUseCase
-import com.dexciuq.shoppinglist.domain.GetProductUseCase
-import com.dexciuq.shoppinglist.domain.Product
-import com.dexciuq.shoppinglist.domain.UpdateProductUseCase
+import androidx.lifecycle.viewModelScope
+import com.dexciuq.shoppinglist.data.repository.ProductRepositoryImpl
+import com.dexciuq.shoppinglist.domain.model.Product
+import com.dexciuq.shoppinglist.domain.use_case.AddProductUseCase
+import com.dexciuq.shoppinglist.domain.use_case.GetProductUseCase
+import com.dexciuq.shoppinglist.domain.use_case.UpdateProductUseCase
+import kotlinx.coroutines.launch
 
-class ProductViewModel : ViewModel() {
+class ProductViewModel(
+    application: Application
+) : AndroidViewModel(application) {
 
-    private val productRepository = ProductRepositoryImpl
+    private val productRepository = ProductRepositoryImpl(application)
 
     private val getProductUseCase = GetProductUseCase(productRepository)
     private val updateProductUseCase = UpdateProductUseCase(productRepository)
@@ -37,12 +42,12 @@ class ProductViewModel : ViewModel() {
         _quantityInputError.value = false
     }
 
-    fun getProduct(id: Int) {
+    fun getProduct(id: Int) = viewModelScope.launch {
         val product = getProductUseCase(id)
         _product.value = product
     }
 
-    fun updateProduct(nameInput: String?, quantityInput: String?) {
+    fun updateProduct(nameInput: String?, quantityInput: String?) = viewModelScope.launch {
         val name = parseName(nameInput)
         val quantity = parseQuantity(quantityInput)
 
@@ -57,7 +62,7 @@ class ProductViewModel : ViewModel() {
         }
     }
 
-    fun addProduct(nameInput: String?, quantityInput: String?) {
+    fun addProduct(nameInput: String?, quantityInput: String?) = viewModelScope.launch {
         val name = parseName(nameInput)
         val quantity = parseQuantity(quantityInput)
 
