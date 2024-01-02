@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.FragmentProductBinding
 import com.dexciuq.shoppinglist.domain.model.Product
-import com.dexciuq.shoppinglist.appComponent
+import com.dexciuq.shoppinglist.applicationComponent
 import javax.inject.Inject
 
 class ProductFragment : Fragment() {
@@ -31,7 +31,7 @@ class ProductFragment : Fragment() {
     private var id: Int = Product.UNDEFINED_ID
 
     override fun onAttach(context: Context) {
-        context.appComponent.inject(this)
+        context.applicationComponent.inject(this)
         super.onAttach(context)
         if (context is OnSaveListener) {
             onSaveListener = context

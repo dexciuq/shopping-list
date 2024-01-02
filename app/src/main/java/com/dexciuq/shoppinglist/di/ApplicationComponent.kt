@@ -6,8 +6,9 @@ import com.dexciuq.shoppinglist.presentation.ProductFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [AppModule::class])
-interface AppComponent {
+@ApplicationScope
+@Component(modules = [ApplicationModule::class])
+interface ApplicationComponent {
     fun inject(fragment: ProductFragment)
     fun inject(activity: MainActivity)
 
@@ -15,6 +16,6 @@ interface AppComponent {
     interface Factory {
         fun create(
             @BindsInstance application: Application
-        ): AppComponent
+        ): ApplicationComponent
     }
 }

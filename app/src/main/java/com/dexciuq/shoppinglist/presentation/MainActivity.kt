@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
 import com.dexciuq.shoppinglist.presentation.adapter.ProductListAdapter
-import com.dexciuq.shoppinglist.appComponent
+import com.dexciuq.shoppinglist.applicationComponent
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
     private lateinit var adapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
+        applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setProductsRecyclerView()

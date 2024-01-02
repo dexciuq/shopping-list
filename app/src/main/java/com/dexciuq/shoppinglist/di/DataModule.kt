@@ -13,16 +13,19 @@ import dagger.Provides
 interface DataModule {
 
     @Binds
+    @ApplicationScope
     fun bindProductRepository(impl: ProductRepositoryImpl): ProductRepository
 
     companion object {
 
         @Provides
+        @ApplicationScope
         fun provideAppDatabase(application: Application): AppDatabase {
             return AppDatabase.getInstance(application)
         }
 
         @Provides
+        @ApplicationScope
         fun provideProductDao(appDatabase: AppDatabase): ProductDao {
             return appDatabase.productDao()
         }
