@@ -1,21 +1,17 @@
 package com.dexciuq.shoppinglist.data.repository
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.dexciuq.shoppinglist.data.db.AppDatabase
 import com.dexciuq.shoppinglist.data.db.dao.ProductDao
 import com.dexciuq.shoppinglist.data.mapper.ProductMapper
 import com.dexciuq.shoppinglist.domain.model.Product
 import com.dexciuq.shoppinglist.domain.repository.ProductRepository
+import javax.inject.Inject
 
-class ProductRepositoryImpl(
-    application: Application
+class ProductRepositoryImpl @Inject constructor(
+    private val productDao: ProductDao,
+    private val productMapper: ProductMapper,
 ) : ProductRepository {
-
-    private val productDao: ProductDao = AppDatabase.getInstance(application).productDao()
-    private val productMapper: ProductMapper = ProductMapper()
-
     override fun getProductList(): LiveData<List<Product>> =
         productDao.getProductList().map {
             it.run(productMapper::toDomain)

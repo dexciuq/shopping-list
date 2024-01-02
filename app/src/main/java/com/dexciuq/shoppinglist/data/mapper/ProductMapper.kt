@@ -2,8 +2,9 @@ package com.dexciuq.shoppinglist.data.mapper
 
 import com.dexciuq.shoppinglist.data.model.ProductEntity
 import com.dexciuq.shoppinglist.domain.model.Product
+import javax.inject.Inject
 
-class ProductMapper {
+class ProductMapper @Inject constructor() {
     fun toEntity(product: Product): ProductEntity = ProductEntity(
         id = product.id,
         name = product.name,

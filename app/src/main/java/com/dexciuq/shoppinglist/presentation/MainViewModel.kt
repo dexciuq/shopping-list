@@ -1,24 +1,19 @@
 package com.dexciuq.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dexciuq.shoppinglist.data.repository.ProductRepositoryImpl
 import com.dexciuq.shoppinglist.domain.model.Product
-import com.dexciuq.shoppinglist.domain.use_case.DeleteProductUseCase
-import com.dexciuq.shoppinglist.domain.use_case.GetProductListUseCase
-import com.dexciuq.shoppinglist.domain.use_case.UpdateProductUseCase
+import com.dexciuq.shoppinglist.domain.usecase.DeleteProductUseCase
+import com.dexciuq.shoppinglist.domain.usecase.GetProductListUseCase
+import com.dexciuq.shoppinglist.domain.usecase.UpdateProductUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val productRepository = ProductRepositoryImpl(application)
-
-    private val getProductListUseCase = GetProductListUseCase(productRepository)
-    private val deleteProductUseCase = DeleteProductUseCase(productRepository)
-    private val updateProductUseCase = UpdateProductUseCase(productRepository)
+class MainViewModel @Inject constructor(
+    private val getProductListUseCase: GetProductListUseCase,
+    private val deleteProductUseCase: DeleteProductUseCase,
+    private val updateProductUseCase: UpdateProductUseCase,
+) : ViewModel() {
 
     val productList = getProductListUseCase()
 

@@ -12,11 +12,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.FragmentProductBinding
 import com.dexciuq.shoppinglist.domain.model.Product
+import com.dexciuq.shoppinglist.appComponent
+import javax.inject.Inject
 
 class ProductFragment : Fragment() {
 
     private val binding by lazy { FragmentProductBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[ProductViewModel::class.java] }
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[ProductViewModel::class.java]
+    }
 
     private lateinit var onSaveListener: OnSaveListener
 
@@ -24,6 +31,7 @@ class ProductFragment : Fragment() {
     private var id: Int = Product.UNDEFINED_ID
 
     override fun onAttach(context: Context) {
+        context.appComponent.inject(this)
         super.onAttach(context)
         if (context is OnSaveListener) {
             onSaveListener = context

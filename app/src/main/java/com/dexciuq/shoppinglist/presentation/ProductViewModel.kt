@@ -1,26 +1,21 @@
 package com.dexciuq.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dexciuq.shoppinglist.data.repository.ProductRepositoryImpl
 import com.dexciuq.shoppinglist.domain.model.Product
-import com.dexciuq.shoppinglist.domain.use_case.AddProductUseCase
-import com.dexciuq.shoppinglist.domain.use_case.GetProductUseCase
-import com.dexciuq.shoppinglist.domain.use_case.UpdateProductUseCase
+import com.dexciuq.shoppinglist.domain.usecase.AddProductUseCase
+import com.dexciuq.shoppinglist.domain.usecase.GetProductUseCase
+import com.dexciuq.shoppinglist.domain.usecase.UpdateProductUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val productRepository = ProductRepositoryImpl(application)
-
-    private val getProductUseCase = GetProductUseCase(productRepository)
-    private val updateProductUseCase = UpdateProductUseCase(productRepository)
-    private val addProductUseCase = AddProductUseCase(productRepository)
+class ProductViewModel @Inject constructor(
+    private val getProductUseCase: GetProductUseCase,
+    private val updateProductUseCase: UpdateProductUseCase,
+    private val addProductUseCase: AddProductUseCase,
+) : ViewModel() {
 
     private val _nameInputError = MutableLiveData<Boolean>()
     val nameInputError: LiveData<Boolean> = _nameInputError

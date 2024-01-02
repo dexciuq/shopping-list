@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#50BB86FC"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="#50BB86FC"
         android:padding="16dp">
 
         <TextView

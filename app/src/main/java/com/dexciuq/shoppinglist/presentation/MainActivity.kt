@@ -11,14 +11,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
 import com.dexciuq.shoppinglist.presentation.adapter.ProductListAdapter
+import com.dexciuq.shoppinglist.appComponent
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
     private lateinit var adapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setProductsRecyclerView()
