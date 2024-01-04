@@ -1,6 +1,7 @@
 package com.dexciuq.shoppinglist.presentation
 
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
+import com.dexciuq.shoppinglist.applicationComponent
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
 import com.dexciuq.shoppinglist.presentation.adapter.ProductListAdapter
-import com.dexciuq.shoppinglist.applicationComponent
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
         setProductsRecyclerView()
         setupAddProduct()
         setObservers()
+
+        contentResolver.query(
+            Uri.parse("content://com.dexciuq.shoppinglist/products"),
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     override fun onSaveClick() {
