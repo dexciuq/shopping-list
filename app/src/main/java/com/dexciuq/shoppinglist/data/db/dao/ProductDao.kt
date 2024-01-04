@@ -1,5 +1,6 @@
 package com.dexciuq.shoppinglist.data.db.dao
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -9,6 +10,8 @@ import com.dexciuq.shoppinglist.data.model.ProductEntity
 
 @Dao
 interface ProductDao {
+    @Query("SELECT * FROM products")
+    fun getProductListCursor(): Cursor
 
     @Query("SELECT * FROM products")
     fun getProductList(): LiveData<List<ProductEntity>>

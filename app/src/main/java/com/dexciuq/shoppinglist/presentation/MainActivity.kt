@@ -3,6 +3,7 @@ package com.dexciuq.shoppinglist.presentation
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dexciuq.shoppinglist.R
 import com.dexciuq.shoppinglist.applicationComponent
 import com.dexciuq.shoppinglist.databinding.ActivityMainBinding
+import com.dexciuq.shoppinglist.domain.model.Product
 import com.dexciuq.shoppinglist.presentation.adapter.ProductListAdapter
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
@@ -35,13 +38,35 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
         setupAddProduct()
         setObservers()
 
-        contentResolver.query(
-            Uri.parse("content://com.dexciuq.shoppinglist/products"),
-            null,
-            null,
-            null,
-            null
-        )
+        // test content provider method
+        testContentProvider()
+    }
+
+    private fun testContentProvider() {
+        thread {
+            val cursor = contentResolver.query(
+                Uri.parse("content://com.dexciuq.shoppinglist/products"),
+                null,
+                null,
+                null,
+                null
+            )
+            while (cursor?.moveToNext() == true) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+                val quantity = cursor.getDouble(cursor.getColumnIndexOrThrow("quantity"))
+                val active = cursor.getInt(cursor.getColumnIndexOrThrow("active")) > 0
+
+                val product = Product(
+                    id = id,
+                    name = name,
+                    quantity = quantity,
+                    active = active
+                )
+                Log.d("MainActivity", "Cursor: $product")
+            }
+            cursor?.close()
+        }
     }
 
     override fun onSaveClick() {

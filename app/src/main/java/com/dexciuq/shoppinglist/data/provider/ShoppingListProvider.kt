@@ -6,8 +6,15 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
+import com.dexciuq.shoppinglist.ShoppingListApplication
+import com.dexciuq.shoppinglist.applicationComponent
+import com.dexciuq.shoppinglist.data.db.dao.ProductDao
+import javax.inject.Inject
 
 class ShoppingListProvider : ContentProvider() {
+
+    @Inject
+    lateinit var productDao: ProductDao
 
     private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
         addURI("com.dexciuq.shoppinglist", "products", CODE_QUERY_GET_PRODUCTS)
@@ -15,6 +22,7 @@ class ShoppingListProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
+        context?.applicationComponent?.inject(this)
         return true
     }
 
@@ -26,17 +34,11 @@ class ShoppingListProvider : ContentProvider() {
         sortOrder: String?
     ): Cursor? {
         val code = uriMatcher.match(uri)
-        when (code) {
-            CODE_QUERY_GET_PRODUCTS -> {
-
-            }
-            CODE_QUERY_GET_PRODUCT_BY_ID -> {
-
-            }
-        }
-
         Log.d("ShoppingListProvider", "query: $uri $code")
-        return null
+        return when (code) {
+            CODE_QUERY_GET_PRODUCTS -> productDao.getProductListCursor()
+            else -> null
+        }
     }
 
     override fun getType(uri: Uri): String? {
