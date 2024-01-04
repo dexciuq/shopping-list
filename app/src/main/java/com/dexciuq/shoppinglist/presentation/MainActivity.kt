@@ -43,6 +43,9 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
     }
 
     private fun testContentProvider() {
+        // TODO: when accessing to data from other applications, add manifest tag
+        //       <queries> and <provider>
+        //       starting from Android 11
         thread {
             val cursor = contentResolver.query(
                 Uri.parse("content://com.dexciuq.shoppinglist/products"),
