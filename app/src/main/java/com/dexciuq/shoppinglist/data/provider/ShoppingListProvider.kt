@@ -5,16 +5,19 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
-import com.dexciuq.shoppinglist.ShoppingListApplication
 import com.dexciuq.shoppinglist.applicationComponent
 import com.dexciuq.shoppinglist.data.db.dao.ProductDao
+import com.dexciuq.shoppinglist.data.mapper.ProductMapper
+import com.dexciuq.shoppinglist.domain.model.Product
 import javax.inject.Inject
 
 class ShoppingListProvider : ContentProvider() {
 
     @Inject
     lateinit var productDao: ProductDao
+
+    @Inject
+    lateinit var mapper: ProductMapper
 
     private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
         addURI("com.dexciuq.shoppinglist", "products", CODE_QUERY_GET_PRODUCTS)
@@ -33,9 +36,7 @@ class ShoppingListProvider : ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor? {
-        val code = uriMatcher.match(uri)
-        Log.d("ShoppingListProvider", "query: $uri $code")
-        return when (code) {
+        return when (uriMatcher.match(uri)) {
             CODE_QUERY_GET_PRODUCTS -> productDao.getProductListCursor()
             else -> null
         }
@@ -46,7 +47,23 @@ class ShoppingListProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        TODO("Not yet implemented")
+        when (uriMatcher.match(uri)) {
+            CODE_QUERY_GET_PRODUCTS -> {
+                values ?: return null
+                val id = values.getAsInteger("id")
+                val name = values.getAsString("name")
+                val quantity = values.getAsDouble("quantity")
+                val active = values.getAsBoolean("active")
+                val product = Product(
+                    id = id,
+                    name = name,
+                    quantity = quantity,
+                    active = active
+                )
+                productDao.addProductSync(product.run(mapper::toEntity))
+            }
+        }
+        return null
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {

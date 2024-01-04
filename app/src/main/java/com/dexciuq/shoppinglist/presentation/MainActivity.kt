@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
         setupAddProduct()
         setObservers()
 
-        // test content provider method
+//        FIXME: method was called to test content provider query method, needs to delete
         testContentProvider()
     }
 

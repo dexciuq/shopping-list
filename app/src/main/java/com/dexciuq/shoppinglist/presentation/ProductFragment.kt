@@ -1,6 +1,8 @@
 package com.dexciuq.shoppinglist.presentation
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +12,11 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dexciuq.shoppinglist.R
+import com.dexciuq.shoppinglist.applicationComponent
 import com.dexciuq.shoppinglist.databinding.FragmentProductBinding
 import com.dexciuq.shoppinglist.domain.model.Product
-import com.dexciuq.shoppinglist.applicationComponent
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class ProductFragment : Fragment() {
 
@@ -107,10 +110,22 @@ class ProductFragment : Fragment() {
 
     private fun launchAddMode() {
         binding.saveButton.setOnClickListener {
-            viewModel.addProduct(
-                nameInput = binding.etName.text?.toString(),
-                quantityInput = binding.etCount.text?.toString()
-            )
+//            FIXME: code what commented to test content provider insert method, needs to uncomment
+//            viewModel.addProduct(
+//                nameInput = binding.etName.text?.toString(),
+//                quantityInput = binding.etCount.text?.toString()
+//            )
+            thread {
+                context?.contentResolver?.insert(
+                    Uri.parse("content://com.dexciuq.shoppinglist/products"),
+                    ContentValues().apply {
+                        put("id", 0)
+                        put("name", binding.etName.text?.toString())
+                        put("quantity", binding.etCount.text?.toString()?.toDouble())
+                        put("active", true)
+                    }
+                )
+            }
         }
     }
 
