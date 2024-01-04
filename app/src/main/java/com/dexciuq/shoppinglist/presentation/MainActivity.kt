@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
         setupAddProduct()
         setObservers()
 
-//        FIXME: method was called to test content provider query method, needs to delete
+//        FIXME: method was called to test content provider QUERY method, needs to delete
         testContentProvider()
     }
 
@@ -154,7 +154,15 @@ class MainActivity : AppCompatActivity(), ProductFragment.OnSaveListener {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = adapter.currentList[viewHolder.adapterPosition]
-                viewModel.deleteProduct(item.id)
+//                FIXME: to test content provider DELETE method, needs to delete
+//                viewModel.deleteProduct(item.id)
+                thread {
+                    contentResolver.delete(
+                        Uri.parse("content://com.dexciuq.shoppinglist/products"),
+                        null,
+                        arrayOf("1")
+                    )
+                }
             }
         }
         val itemTouchHelper = ItemTouchHelper(callback)

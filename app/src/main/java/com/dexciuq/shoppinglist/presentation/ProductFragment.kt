@@ -110,7 +110,7 @@ class ProductFragment : Fragment() {
 
     private fun launchAddMode() {
         binding.saveButton.setOnClickListener {
-//            FIXME: code what commented to test content provider insert method, needs to uncomment
+//            FIXME: code what commented to test content provider INSERT method, needs to uncomment
 //            viewModel.addProduct(
 //                nameInput = binding.etName.text?.toString(),
 //                quantityInput = binding.etCount.text?.toString()

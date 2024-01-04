@@ -67,7 +67,13 @@ class ShoppingListProvider : ContentProvider() {
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        when (uriMatcher.match(uri)) {
+            CODE_QUERY_GET_PRODUCTS -> {
+                val id = selectionArgs?.first()?.toInt() ?: -1
+                return productDao.deleteProductSync(id)
+            }
+        }
+        return 0
     }
 
     override fun update(
